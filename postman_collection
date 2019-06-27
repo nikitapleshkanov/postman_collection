@@ -1,0 +1,240 @@
+{
+	"info": {
+		"_postman_id": "cfa720a7-1272-465b-bc24-b148c1ecdcb2",
+		"name": "TestReqres",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "TestUserCreation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "65519f08-e71b-49a9-a3a5-2547f77076ff",
+						"exec": [
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+							"});",
+							"",
+							"pm.test(\"Test name_value\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    name_value = pm.globals.get(\"name\");",
+							"    pm.expect(jsonData.name).to.eql(name_value);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"name\": \"{{name}}\",\r\n    \"job\": \"leader\"\r\n}"
+				},
+				"url": {
+					"raw": "{{url}}api/users",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TestPageNumber",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fd637520-dd90-42f8-92a8-694b5ee7654a",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"page_number\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    var page_number = pm.environment.get(\"page\")",
+							"    pm.expect(jsonData.page).to.eql(parseInt(page_number));",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}api/users?page={{page}}",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "{{page}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TestChangeName",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "84236ada-4547-4da9-8e11-f7ce9fe20ea7",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.test(\"Successful request\", function () {",
+							"    pm.expect(pm.response.code).to.eql(200);",
+							"});",
+							"",
+							"pm.test(\"Test name_value\", function () {",
+							"    ",
+							"    name_value = pm.globals.get(\"name\");",
+							"    pm.expect(jsonData.name).to.eql(name_value);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\" : \"{{name}}\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}api/users/2",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TestDeleteUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "96422130-80d2-4b88-bc84-55dd94e08738",
+						"exec": [
+							"",
+							"pm.test(\"Successful request\", function () {",
+							"    pm.expect(pm.response.code).to.eql(204);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}api/users/2",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TestUpdateNameWithPut",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "965514ff-0304-4981-a6a7-6d72d3f9a2f8",
+						"exec": [
+							"",
+							"",
+							"pm.test(\"Name_check\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.name).to.eql(\"morpheus\");",
+							"});",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.be.header(\"Content-Type\", \"application/json; charset=utf-8\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"morpheus\",\r\n    \"job\": \"zion resident\"\r\n}"
+				},
+				"url": {
+					"raw": "{{url}}api/users/2",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
